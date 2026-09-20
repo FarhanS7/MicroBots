@@ -14,6 +14,7 @@ from oap.api.errors import (
     generic_exception_handler,
 )
 from oap.api.toolchain_router import router as toolchain_router
+from oap.api.bootstrap_router import router as bootstrap_router
 
 
 @asynccontextmanager
@@ -78,5 +79,6 @@ def create_app() -> FastAPI:
 
     # Mount safe baseline routers
     app.include_router(toolchain_router)
+    app.include_router(bootstrap_router)
 
     return app
