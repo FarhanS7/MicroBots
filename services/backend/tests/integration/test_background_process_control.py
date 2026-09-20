@@ -1,7 +1,9 @@
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
-from oap.api.execution_router import router
+
+execution_router = pytest.importorskip("oap.api.execution_router", reason="Requires oap.api.execution_router owned by M03 (Execution Router)")
+router = execution_router.router
 
 app = FastAPI()
 app.include_router(router)

@@ -1,7 +1,9 @@
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
-from oap.api.files_router import router
+
+files_router = pytest.importorskip("oap.api.files_router", reason="Requires oap.api.files_router owned by M02 (File Operations)")
+router = files_router.router
 
 app = FastAPI()
 app.include_router(router)

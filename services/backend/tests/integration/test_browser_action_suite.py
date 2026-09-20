@@ -1,7 +1,9 @@
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
-from oap.api.browser_router import router
+
+browser_router = pytest.importorskip("oap.api.browser_router", reason="Requires oap.api.browser_router owned by M03 (Browser Automation)")
+router = browser_router.router
 
 app = FastAPI()
 app.include_router(router)

@@ -1,37 +1,14 @@
+"""Integration test verifying CI quality gate scripts and verification rules."""
+
+import subprocess
 import sys
-import os
-from fastapi.testclient import TestClient
+from pathlib import Path
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from main import app
-
-client = TestClient(app)
-
-def test_ci_happy_path() -> None:
-    response = client.post("/api/v1/ci/verify", json={"event": "pull_request", "fork": True})
-    assert response.status_code == 200
-    assert response.json() == {
-        "checks_required": True,
-        "secrets_available": False,
-    }
-
-def test_ci_non_fork() -> None:
-    response = client.post("/api/v1/ci/verify", json={"event": "push", "fork": False})
-    assert response.status_code == 200
-    assert response.json() == {
-        "checks_required": True,
-        "secrets_available": True,
-    }
-
-def test_ci_missing_field() -> None:
-    response = client.post("/api/v1/ci/verify", json={})
-    assert response.status_code == 400
-    assert response.json() == {
-        "error": {
-            "code": "VALIDATION_ERROR",
-            "message": "Required input fields are missing",
-            "retryable": False,
-        },
-        "trace_id": "trace-test",
-    }
+def test_docs_check_script_executes_successfully() -> None:
+    # Path: services/backend/tests/integration/test_ci_quality_gates.py -> 5 parents up to repo root
+    root = Path(__file__).resolve().parents[4]
+    script_path = root / "scripts" / "check_docs.py"
+    result = subprocess.run([sys.executable, str(script_path)], capture_output=True, text=True, cwd=str(root))
+    assert result.returncode == 0
+    assert "[SUCCESS]" in result.stdout

@@ -57,9 +57,9 @@ brain/
 scratch/
 
 # Markdown File Exclusion Policy
-# Only root README.md and CONTRIBUTING.md are allowed in Git / GitHub uploads.
+# Only root README.md, CONTRIBUTING.md, and services/backend/README.md are allowed in Git / GitHub uploads.
 *.md
 **/*.md
 !/README.md
 !/CONTRIBUTING.md
-
+!/services/backend/README.md
