@@ -1,0 +1,35 @@
+name: CI Quality Gates
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+permissions:
+  contents: read
+
+jobs:
+  quality_checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run Docs Check
+        run: python scripts/check_docs.py
+
+      - name: Install Backend Dependencies
+        run: |
+          cd services/backend
+          pip install fastapi uvicorn pydantic pydantic-settings sqlalchemy asyncpg alembic temporalio pytest pytest-asyncio httpx
+
+      - name: Run Backend Integration Tests
+        run: |
+          cd services/backend
+          python -m pytest tests/integration/ -v
