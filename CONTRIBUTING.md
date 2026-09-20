@@ -1,43 +1,56 @@
-# Contributing to Open Agent Platform
+# Contributing to MicroBots
 
-Current status: planning only. No application startup command works yet; see [the planning guide](docs/README.md). The project intends MIT licensing; actual copyright holder and public GitHub owner remain to be confirmed before publication.
+Current status: MicroBots baseline recovery and milestone execution phase.
 
-## Understand and choose work
+## Codebase Structure & Branding
 
-Read ARCHITECTURE.md and the task index. Pick a ready task with completed prerequisites. Discuss architecture/scope changes in a decision record before implementation. Contributors need not install the author's personal skills: the portable task and phase commands contain required workflow behavior.
+- **Project Name**: MicroBots (`microbots-monorepo`, `microbots-backend`).
+- **Python Import Namespace**: Internal Python domain logic uses the `oap` namespace (`services/backend/oap/...`).
+- **Repository Setup**: Multi-package repository with Python backend (`services/backend`) and JavaScript/TypeScript workspace packages (`apps/*`, `packages/*`).
 
-## Branches and commits
+## Local Plan Isolation Policy
 
-- `main`: production releases, protected; `dev`: integration, protected once remote exists.
-- `feature/<module>/<task-slug>`: one task, from dev, reviewed PR back to dev.
-- `hotfix/<description>`: from main, reviewed fix promoted to main and separately reconciled into dev.
-- One independently verified subtask per commit, tests included. One review fix per fix commit. Stage explicit paths and inspect the diff; never commit secrets, runtime data, browser cookies, keys, or generated dependency folders.
-- Format `type(scope): description`; types `feat`, `fix`, `test`, `refactor`, `docs`, `chore`. Body explains why and references task ID.
-- Examples: `feat(tasks): persist idempotent task submission`; `test(tasks): cover duplicate delivery after restart`; `fix(policy): reject consumed approval grants`; `docs(tasks): record F14 review evidence`.
+- All detailed PRD execution roadmaps, completion guides, and internal review context are maintained locally and excluded from Git tracking (`.gitignore`).
+- Only `README.md` and `CONTRIBUTING.md` are tracked in the public repository for developer onboarding.
+- Public pull requests and issue descriptions must provide self-contained context without referencing local plan paths.
 
-Initial Git bootstrap (only when there is no existing repository):
+## Git Branching & Commit Conventions
 
-```sh
-git init -b main
-git commit --allow-empty -m "chore(repo): establish release baseline"
-git switch -c dev
-git switch -c feature/foundation/git-community-bootstrap
-```
+- `main`: Production release branch. Protected against unverified direct commits.
+- `dev`: Integration branch for verified features and milestone candidates.
+- `feature/<module>/<task-slug>`: Feature and task implementation branches created off `dev`.
+- `hotfix/<description>`: Emergency fixes branched from `main`, merged to `main` and reconciled into `dev`.
 
-This empty baseline is the sole initialization exception to main's no-direct-commit rule. Do not invent user.name/user.email or alter global Git identity. In existing repositories inspect history and remotes instead.
+### Commit Message Format
 
-## Verification and review
+Use Conventional Commits: `type(scope): description`
+- Types: `feat`, `fix`, `test`, `refactor`, `docs`, `chore`.
+- Examples:
+  - `feat(tasks): persist idempotent task submission`
+  - `test(tasks): cover duplicate delivery after restart`
+  - `fix(policy): reject consumed approval grants`
+  - `chore(recovery): reconcile project baseline and decisions`
 
-Use the task's focused checks plus [verification contract](docs/architecture/verification.md). Every public behavior has happy, error and relevant concurrency/security coverage. Independent review uses the [review command](docs/commands/phase-2.5-review.md), followed by an owner walkthrough. A clean test run is not independent review. Record review evidence even when working solo; a GitHub PR author cannot approve their own PR.
+## Verification & Workflow
 
-Use merge commits to preserve verified subtask history. Required checks and unresolved critical/high findings block merge. Feature implementation and unrelated cleanup belong in different PRs. Keep public descriptions readable without access to this conversation.
+- Every task commit must be accompanied by passing unit/integration test evidence.
+- Run unit tests from `services/backend`:
+  ```sh
+  cd services/backend
+  python -m pytest tests/unit/ -v
+  ```
+- Public pull requests target `dev` and include self-contained test execution logs and descriptions.
 
-## Public project setup plan
+## Capabilities & Evidence Verification Checklist
 
-F02 creates README, LICENSE, SECURITY.md, CODE_OF_CONDUCT.md, issue templates and PR template once owner details are known. SECURITY must provide a real private reporting route before the repository advertises one. Use GitHub private vulnerability reporting if available/configured; never invent a maintainer email. Preserve upstream licenses for vendored skill collections; they are not automatically first-party project code.
+Before submitting a pull request to `dev`, verify the following baseline criteria:
 
-Bug reports include version, deployment mode, sanitized reproduction, expected/actual outcome and relevant trace IDs. Feature proposals link PRD section and explain value, scope and acceptance. Label beginner-friendly tasks only when prerequisites and setup are clear. PRs link task ID, tests, independent review, migration and rollback details.
+- [ ] **Unit Tests**: All unit tests pass cleanly (`python -m pytest tests/unit/ -v` inside `services/backend`).
+- [ ] **Import Cleanliness**: No unhandled or missing internal module imports.
+- [ ] **Commit Integrity**: Each commit contains an independently verifiable increment with tests and code changes grouped together.
+- [ ] **Git Exclusion**: No internal Markdown planning or review artifacts are staged or force-added.
+- [ ] **Public Context**: Pull request descriptions explicitly outline what was built, what was tested, and the exact test output.
 
-## Publication boundary
+## License
 
-This plan does not initialize Git, create a remote, push files, or publish a release. When the owner authorizes publication, inspect staged content and configure the chosen repository deliberately. Public issue/PR text must exclude credentials, private task content and unpublished vulnerability details.
+MicroBots is distributed under the MIT License.
