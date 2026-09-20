@@ -1,0 +1,15 @@
+{
+  "name": "microbots-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MicroBots Monorepo Root",
+  "scripts": {
+    "docs:check": "python scripts/check_docs.py",
+    "test:backend": "cd services/backend && pytest",
+    "lint:backend": "cd services/backend && ruff check .",
+    "build": "pnpm --filter @microbots/protocol build && pnpm --filter @microbots/web build"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5"
+  }
+}
