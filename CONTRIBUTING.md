@@ -41,6 +41,16 @@ Use Conventional Commits: `type(scope): description`
   ```
 - Public pull requests target `dev` and include self-contained test execution logs and descriptions.
 
+## Capabilities & Evidence Verification Checklist
+
+Before submitting a pull request to `dev`, verify the following baseline criteria:
+
+- [ ] **Unit Tests**: All unit tests pass cleanly (`python -m pytest tests/unit/ -v` inside `services/backend`).
+- [ ] **Import Cleanliness**: No unhandled or missing internal module imports.
+- [ ] **Commit Integrity**: Each commit contains an independently verifiable increment with tests and code changes grouped together.
+- [ ] **Git Exclusion**: No internal Markdown planning or review artifacts are staged or force-added.
+- [ ] **Public Context**: Pull request descriptions explicitly outline what was built, what was tested, and the exact test output.
+
 ## License
 
 MicroBots is distributed under the MIT License.
