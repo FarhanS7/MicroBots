@@ -4,10 +4,11 @@
   "private": true,
   "description": "MicroBots Monorepo Root",
   "scripts": {
-    "docs:check": "python scripts/check_docs.py",
-    "test:backend": "cd services/backend && pytest",
-    "lint:backend": "cd services/backend && ruff check .",
-    "build": "pnpm --filter @microbots/protocol build && pnpm --filter @microbots/web build"
+    "build": "pnpm --filter @microbots/protocol build && pnpm --filter @microbots/web build",
+    "test:protocol": "pnpm --filter @microbots/protocol test",
+    "test:unit": "cd services/backend && python -m pytest tests/unit/ -v",
+    "typecheck": "pnpm --filter @microbots/protocol build && pnpm --filter @microbots/web exec tsc --noEmit",
+    "docs:check": "python scripts/check_docs.py"
   },
   "devDependencies": {
     "prettier": "^3.2.5"
